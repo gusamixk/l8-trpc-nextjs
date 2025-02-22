@@ -9,38 +9,37 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
-  import { Ellipsis } from "lucide-react";
+  import { Delete, DeleteIcon, Ellipsis } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuRadioItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { api } from "@/trpc/react";
+import { toast } from "sonner";
   
 
-
-  
-export const DeleteTodoDialog = () => {
-    
+export type DeleteTodoDialogProps = {
+  todoId : string;
+  refetch : () => void
+}
+export const DeleteTodoDialog = ({todoId, refetch} : DeleteTodoDialogProps) => {
+const {mutate : deleteTodo} = api.todo.delete.useMutation(
+  {
+    onSuccess: () => {
+      toast.success("Todo deleted successfully")
+      refetch();
+    },
+  }
+);
+const handleDeleteTodo = ()=> {
+  deleteTodo ({id : todoId});
+}
     return(
       <AlertDialog> 
-     
-      <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Ellipsis className="h-5 w-5" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem>
-          <Button asChild>
-            <Link href="#">Edit</Link>
-          </Button>
-        </DropdownMenuItem>
         <AlertDialogTrigger asChild>
-          <DropdownMenuItem className="text-red-600 cursor-pointer">
-            Hapus
-          </DropdownMenuItem>
+        <Button variant="outline" size="icon">
+          <DeleteIcon/>
+        </Button>
         </AlertDialogTrigger>
-      </DropdownMenuContent>
-    </DropdownMenu> 
       <AlertDialogContent> 
         <AlertDialogHeader> 
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle> 
@@ -51,7 +50,7 @@ export const DeleteTodoDialog = () => {
         </AlertDialogHeader> 
         <AlertDialogFooter> 
           <AlertDialogCancel>Cancel</AlertDialogCancel> 
-          <AlertDialogAction> 
+          <AlertDialogAction onClick={handleDeleteTodo} > 
             Continue 
           </AlertDialogAction> 
         </AlertDialogFooter> 

@@ -6,12 +6,6 @@ type TodoCheckboxProps = {
   statusCheked: boolean;
 };
 
-/*************  ✨ Codeium Command 🌟  *************/
-/**
- * A checkbox component for the Todo app.
- *
- * @param todoId The ID of the todo item.
- * @param statusCheked The current status of the checkbox.
 export const TodoCheckbox = ({ todoId, statusCheked }: TodoCheckboxProps) => {
 
   return (
@@ -20,4 +14,4 @@ export const TodoCheckbox = ({ todoId, statusCheked }: TodoCheckboxProps) => {
     </div>
   );
 };
-/******  bd8b06be-8d49-4fd3-ae9f-d32a232a1828  *******/
+
